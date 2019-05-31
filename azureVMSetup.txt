@@ -1,0 +1,22 @@
+az group create --name MyResourceGroup --location uksouth
+az configure --defaults group=MyResourceGroup
+az network vnet create --resource-group MyResourceGroup --name MyVirtualNetwork --address-prefixes 10.0.0.0/16 --subnet-name MySubnet --subnet-prefix 10.0.1.0/24
+az network nsg create --name MyNSG
+az network nsg rule create --name SSH --destination-port-ranges 22 --nsg-name MyNetworkSecurityGroup --priority 400
+az network public-ip create --resource-group MyResourceGroup --name MyPublicIP --dns-name ASM
+az network nic create --name MyNI --vnet-name MyVirtualNetwork --subnet MySubnet --network-security-group MyNSG --public-ip-address MyPubLicIP
+az vm create --name MyVirtualMachine --image UbuntuLTS --nics MyNI
+
+ssh -q -L 8080:localhost:8080
+
+copy files from azure .ssh file to local .ssh folder ~/.ssh
+ - following this we need to connect to the right user so ssh -L 8080:localhost:8080 alinawazmamdani@51.140.68.143
+  --Alinawazmamdani is the user name is the cloud shell which is verified to access
+
+apt update
+apt install curl
+sudo curl https://get.docker.com |bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+apt install git
+git clone https://github.com/AlinawazMamdani/jenkins-docker.git
